@@ -1,0 +1,127 @@
+// Prisma schema for Maheswari Store - SQLite version for development
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  password  String
+  firstName String
+  lastName  String
+  phone     String?
+  avatar    String?
+  role      String     @default("CUSTOMER")
+  
+  orders    Order[]
+  reviews   Review[]
+  cart      CartItem[]
+  
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@map("users")
+}
+
+model Product {
+  id          String     @id @default(cuid())
+  name        String
+  description String
+  price       Decimal
+  discount    Decimal    @default(0)
+  stock       Int        @default(0)
+  category    String
+  image       String?
+  images      String     @default("[]")
+  
+  reviews     Review[]
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+  
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@map("products")
+}
+
+model Review {
+  id        String     @id @default(cuid())
+  rating    Int
+  comment   String?
+  
+  productId String
+  product   Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@unique([productId, userId])
+  @@map("reviews")
+}
+
+model CartItem {
+  id        String     @id @default(cuid())
+  quantity  Int        @default(1)
+  
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  productId String
+  product   Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@unique([userId, productId])
+  @@map("cart_items")
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  orderNumber     String      @unique
+  status          String      @default("PENDING")
+  totalAmount     Decimal
+  discount        Decimal     @default(0)
+  finalAmount     Decimal
+  
+  shippingAddress String
+  shippingCity    String
+  shippingState   String
+  shippingZip     String
+  shippingPhone   String
+  
+  userId          String
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  items           OrderItem[]
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String     @id @default(cuid())
+  quantity  Int
+  price     Decimal
+  
+  orderId   String
+  order     Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  productId String?
+  product   Product?   @relation(fields: [productId], references: [id], onDelete: SetNull)
+  
+  createdAt DateTime   @default(now())
+
+  @@map("order_items")
+}
