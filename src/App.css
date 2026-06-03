@@ -1,0 +1,23 @@
+/* App styles - Using Tailwind CSS for most styling */
+a, a:link, a:visited {
+  text-decoration: none;
+}
+button, a {
+  cursor: pointer;
+}
+/* Add any app-specific styles here if needed */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #bill-content,
+    #bill-content * {
+        visibility: visible;
+    }
+    #bill-content {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+}

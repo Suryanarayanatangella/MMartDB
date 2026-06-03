@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #3b82f6;
+  --color-secondary: #ec4899;
+  --color-accent: #f59e0b;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+.img-fluid {
+    width: 100%;
+}
+.row-wrap {
+    flex-flow: row wrap;
+    box-sizing: border-box;
+    display: flex;
+    margin: 0 -7.5px
+}
+
+.grid-100 {
+    flex: 1 1 100%;
+    box-sizing: border-box;
+    max-width: 100%;
+    padding: 0 7.5px
+}
+
+.grid-90 {
+    flex: 1 1 90%;
+    box-sizing: border-box;
+    max-width: 90%;
+    padding: 0 7.5px
+}
+
+.grid-80 {
+    flex: 1 1 80%;
+    box-sizing: border-box;
+    max-width: 80%;
+    padding: 0 7.5px
+}
+
+.grid-75 {
+    flex: 1 1 75%;
+    box-sizing: border-box;
+    max-width: 75%;
+    padding: 0 7.5px
+}
+
+.grid-70 {
+    flex: 1 1 70%;
+    box-sizing: border-box;
+    max-width: 70%;
+    padding: 0 7.5px
+}
+
+.grid-66 {
+    flex: 1 1 66.6666%;
+    box-sizing: border-box;
+    max-width: 66.6666%;
+    padding: 0 7.5px
+}
+
+.grid-60 {
+    flex: 1 1 60%;
+    box-sizing: border-box;
+    max-width: 60%;
+    padding: 0 7.5px
+}
+
+.grid-50 {
+    flex: 1 1 50%;
+    box-sizing: border-box;
+    max-width: 50%;
+    padding: 0 7.5px
+}
+
+.grid-40,.lft-bread {
+    flex: 1 1 40%;
+    box-sizing: border-box;
+    max-width: 40%;
+    padding: 0 7.5px
+}
+
+.grid-33 {
+    flex: 1 1 33.3333%;
+    box-sizing: border-box;
+    max-width: 33.3333%;
+    padding: 0 7.5px
+}
+
+.grid-30 {
+    flex: 1 1 30%;
+    box-sizing: border-box;
+    max-width: 30%;
+    padding: 0 7.5px
+}
+
+.grid-25 {
+    flex: 1 1 25%;
+    box-sizing: border-box;
+    max-width: 25%;
+    padding: 0 7.5px
+}
+
+.grid-20 {
+    flex: 1 1 20%;
+    box-sizing: border-box;
+    max-width: 20%;
+    padding: 0 7.5px
+}
+
+.grid-10 {
+    flex: 1 1 10%;
+    box-sizing: border-box;
+    max-width: 10%;
+    padding: 0 7.5px
+}
+
+.grid-34 {
+    flex: 1 1 34%;
+    box-sizing: border-box;
+    max-width: 34%;
+    padding: 0 7.5px
+}
+
+.image img {
+    max-width: 100%
+}
+.swiper-button-prev,
+.swiper-button-next {
+  display: none !important;
+}
+.card, .btn-clear {
+    box-shadow: 0 0 6px rgba(122, 172, 122, 0.5);
+    padding: 15px;
+    border-radius: 4px;
+}
+.btn-clear {padding: 5px 10px; background: #f0f0f0; border: none; font-weight: 500;}
+.flex-1 {flex: 1 1 10%}
+@media (max-width:640px) {
+  .flex-1 {flex: 1 1 100%}
+  .row-wrap {
+        flex-direction:column
+    }
+    .grid-100,.grid-90,.grid-80,.grid-70,.grid-75,.grid-66,.grid-60,.grid-50,.grid-40,.grid-33,.grid-34,.grid-30,.grid-25,.grid-20 {
+        flex: 1 1 100%;
+        max-width: 100%
+    }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold text-sm transition-colors duration-200 cursor-pointer;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold text-sm border-2 transition-colors duration-200 cursor-pointer;
+  }
+}
