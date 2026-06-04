@@ -59,9 +59,21 @@ router.post('/', async (req, res) => {
         res.json({ success: true, reply: response });
     } catch (err) {
         console.error('Gemini error:', err.message);
+        console.error('GEMINI_API_KEY set:', !!process.env.GEMINI_API_KEY);
+        
+        // Return specific error messages to help diagnose
+        let userMessage = 'Chat service unavailable. Please try again.';
+        if (!process.env.GEMINI_API_KEY) {
+            userMessage = 'Chat service not configured (missing API key).';
+        } else if (err.message?.includes('API_KEY_INVALID')) {
+            userMessage = 'Chat service configuration error.';
+        } else if (err.message?.includes('quota')) {
+            userMessage = 'Chat service is temporarily busy. Please try again in a moment.';
+        }
+
         res.status(500).json({
             success: false,
-            message: 'Chat service unavailable. Please try again.'
+            message: userMessage
         });
     }
 });
