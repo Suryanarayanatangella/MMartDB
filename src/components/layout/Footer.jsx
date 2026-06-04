@@ -11,7 +11,7 @@ export default function Footer() {
           <div>
             <div className="inline-flex items-center gap-2 mb-4 bg-white p-2 rounded">
               <div className="w-5 h-5 flex items-center justify-center">
-                <img src='../../../public/favicon.svg' className='img-fluid' alt='Logo' />
+                <img src='/favicon.svg' className='img-fluid' alt='Logo' />
               </div>
               <span className="font-bold text-xl text-gray-900 hidden sm:inline">
                 M-Mart
