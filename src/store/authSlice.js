@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // Use env variable so auth works in both local and production
-const API_BASE = import.meta.env?.VITE_API_BASE_URL;
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
 export const loginUser = createAsyncThunk('auth/login', 
     async({email, password},{rejectWithValue}) => {
