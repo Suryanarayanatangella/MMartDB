@@ -12,6 +12,7 @@ import OrderSuccessPage from './pages/OrderSuccssPage'
 import Categories from './pages/Categories'
 import AdminOrders from './pages/AdminOrders'
 import MyOrders from './pages/MyOrders'
+import ChatWidget from './pages/ChatWidget'
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path='/orders' element={<MyOrders />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
+      <ChatWidget /> 
     </Router>
   )
 }
