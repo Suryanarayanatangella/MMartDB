@@ -1,13 +1,13 @@
 // Prisma schema for Maheswari Store
-// Local dev  : DATABASE_URL="file:./dev.db"  (SQLite)
-// Production : DATABASE_URL="postgresql://…" — change provider below to postgresql
+// provider = postgresql  — works for both Render (prod) and local PostgreSQL
+// For local dev set DATABASE_URL in .env to your local postgres or a free Neon/Supabase URL
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
