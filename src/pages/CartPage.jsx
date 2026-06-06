@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Trash2, Plus, Minus,ShoppingBag, ArrowLeft } from "lucide-react";
+import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft } from "lucide-react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import CartAISuggestions from "../pages/CartAISuggestions";
+import api from "../api/api";
 import { selectCurrentUser } from "../store/authSlice";
 import { 
     fetchCart,
@@ -27,6 +29,11 @@ import {
     const total = useSelector(selectCartTotal);
     const loading = useSelector(selectCartLoading);
     const error = useSelector(selectCartError);
+
+    //Ai component, and state
+    const [aiSuggestions, setAiSuggestions] = useState(null)
+    const [aiLoading, setAiLoading] = useState(false);
+
     //  redirect if not logged in
     useEffect(()=>{
         if(!isLoggedIn) {
@@ -35,6 +42,12 @@ import {
         } 
         dispatch(fetchCart());
     }, [isLoggedIn, dispatch, navigate]);
+
+    // Trigger when cart loads:
+    useEffect(() => {
+        if (isLoggedIn && items.length > 0) fetchAISuggestions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [items.length]);
 
     //increase quantity by 1
     const handleIncrease = (item) => {
@@ -69,6 +82,21 @@ import {
         }
     };
 
+    const fetchAISuggestions = async () => {
+        if (items.length === 0) return;
+            setAiLoading(true);
+            try {
+                const res = await api.post('/api/cart-ai/suggestions', {
+                    cartItems: items.map(i => ({ productId: i.productId || i.product?.id }))
+                });
+                setAiSuggestions(res);
+            } catch {
+                // silently fail — suggestions are optional
+            } finally {
+                setAiLoading(false);
+        }
+    }
+
     const handleCheckout = () => {
         if(!isLoggedIn) {
             navigate('/login?redirect=/checkout');
@@ -77,6 +105,13 @@ import {
         navigate('/checkout')
     }
     
+        const handleAddSuggestion = (item) => {
+            dispatch(updateCartItem({ 
+                itemId: item.productId, 
+                quantity: item.quantity || 1,
+                isNew: true
+            }));
+        };
     // Empty state
     if (!loading && items.length === 0) {
         return (
@@ -217,6 +252,13 @@ import {
                                     Clear entire cart
                                 </button>
                             </div>
+
+                            {/* AI Cart Suggestions — shown below the cart */}
+                            <CartAISuggestions
+                                suggestions={aiSuggestions}
+                                loading={aiLoading}
+                                onRefresh={fetchAISuggestions}
+                            />
                         </div>
 
                         {/* ── Order summary ───────────────────────────── */}
@@ -265,10 +307,12 @@ import {
                                 </button>
                             </div>
                         </div>
+                        
 
                     </div>
                 )}
             </main>
+
             <Footer />
         </div>
     );

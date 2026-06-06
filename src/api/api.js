@@ -1,8 +1,12 @@
 import axios from 'axios';
 
+const defaultBaseURL = import.meta.env.DEV
+  ? ''
+  : import.meta.env.VITE_API_BASE_URL || window.location.origin;
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001',
-  timeout: 10000,
+  baseURL: defaultBaseURL,
+  timeout: 30000, // 30s — Gemini calls can take longer than 10s
   headers: {
     'Content-Type': 'application/json',
   },

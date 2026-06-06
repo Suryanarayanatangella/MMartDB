@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../api/api";
-export const fetchCart = createAsyncThunk('cart/fetch', async(__dirname, {rejectedWithValue})=>{
+export const fetchCart = createAsyncThunk('cart/fetch', async(__dirname, {rejectWithValue})=>{
     try {
         return await api.get('/api/cart');
     } catch(err) {
-        return rejectedWithValue(err.message);
+        return rejectWithValue(err.message);
     }
 })
 
@@ -64,7 +64,7 @@ const cartSlice = createSlice({
             .addCase(fetchCart.fulfilled, (state, action)=>{
                 state.loading = false;
                 state.items = action.payload.cartItems || [];
-                state.total = action.payload.total | 0;
+                state.total = action.payload.total || 0;
                 state.itemCount = action.payload.itemCount || 0;
             })
             .addCase(fetchCart.rejected, (state, action) => {

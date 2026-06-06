@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCartCount, fetchCart, clearCart } from '../../store/cartSlice';
 import { selectCurrentUser, selectIsLoggedIn, logout } from '../../store/authSlice';
+import SmartSearchBar from '../ui/SmartSearchBar';
 
 export default function Header() {
   const dispatch = useDispatch();
@@ -101,18 +102,7 @@ export default function Header() {
             {/* Right Icons */}
             <div className="flex items-center gap-4">
               {/* Search Bar */}
-              <form onSubmit={handleSearch} className="hidden lg:flex items-center bg-gray-100 rounded-lg px-4 py-2">
-                <input
-                  type="text"
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                  placeholder="Search products..."
-                  className="bg-transparent outline-none text-sm text-gray-700 w-48"
-                />
-                <button type="submit">
-                  <Search size={18} className="text-gray-500 hover:text-blue-600" />
-                </button>
-              </form>
+              <SmartSearchBar className="hidden lg:flex w-64" />
 
               {/* Bell */}
               <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
@@ -235,20 +225,7 @@ export default function Header() {
             ))}
 
             {/* Mobile search */}
-            <form onSubmit={handleSearch} className="px-4 py-2">
-              <div className="flex items-center bg-gray-100 rounded-lg px-3 py-2">
-                <input
-                  type="text"
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                  placeholder="Search..."
-                  className="bg-transparent outline-none text-sm text-gray-700 flex-1"
-                />
-                <button type="submit">
-                  <Search size={18} className="text-gray-500" />
-                </button>
-              </div>
-            </form>
+            <SmartSearchBar className="px-4 py-2 w-full" />
 
             {/* Mobile sign out */}
             {isLoggedIn && (
