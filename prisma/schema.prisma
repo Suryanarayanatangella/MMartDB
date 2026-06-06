@@ -1,4 +1,6 @@
-// Prisma schema for Maheswari Store - SQLite version for development
+// Prisma schema for Maheswari Store
+// Local dev  : DATABASE_URL="file:./dev.db"  (SQLite)
+// Production : DATABASE_URL="postgresql://…" — change provider below to postgresql
 
 generator client {
   provider = "prisma-client-js"
@@ -18,11 +20,11 @@ model User {
   phone     String?
   avatar    String?
   role      String     @default("CUSTOMER")
-  
+
   orders    Order[]
   reviews   Review[]
   cart      CartItem[]
-  
+
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 
@@ -30,57 +32,56 @@ model User {
 }
 
 model Product {
-  id          String     @id @default(cuid())
-  name        String
+  id          String      @id @default(cuid())
+  name        String      @unique
   description String
   price       Decimal
-  discount    Decimal    @default(0)
-  stock       Int        @default(0)
+  discount    Decimal     @default(0)
+  stock       Int         @default(0)
   category    String
   image       String?
-  images      String     @default("[]")
-  
+  images      String      @default("[]")  // stored as JSON string — works on both SQLite & PostgreSQL
+
   reviews     Review[]
   cartItems   CartItem[]
   orderItems  OrderItem[]
-  
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
 
-  @@unique([name])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
   @@map("products")
 }
 
 model Review {
-  id        String     @id @default(cuid())
+  id        String   @id @default(cuid())
   rating    Int
   comment   String?
-  
+
   productId String
-  product   Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
-  
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
   userId    String
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([productId, userId])
   @@map("reviews")
 }
 
 model CartItem {
-  id        String     @id @default(cuid())
-  quantity  Int        @default(1)
-  
+  id        String   @id @default(cuid())
+  quantity  Int      @default(1)
+
   userId    String
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   productId String
-  product   Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
-  
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([userId, productId])
   @@map("cart_items")
@@ -93,18 +94,18 @@ model Order {
   totalAmount     Decimal
   discount        Decimal     @default(0)
   finalAmount     Decimal
-  
+
   shippingAddress String
   shippingCity    String
   shippingState   String
   shippingZip     String
   shippingPhone   String
-  
+
   userId          String
   user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   items           OrderItem[]
-  
+
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 
@@ -112,17 +113,17 @@ model Order {
 }
 
 model OrderItem {
-  id        String     @id @default(cuid())
+  id        String   @id @default(cuid())
   quantity  Int
   price     Decimal
-  
+
   orderId   String
-  order     Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
   productId String?
-  product   Product?   @relation(fields: [productId], references: [id], onDelete: SetNull)
-  
-  createdAt DateTime   @default(now())
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
 
   @@map("order_items")
 }
