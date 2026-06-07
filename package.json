@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon server.js",
-    "local": "nodemon localServer.js",
     "start": "node server.js",
     "prisma:migrate": "prisma migrate dev",
     "prisma:generate": "prisma generate",
