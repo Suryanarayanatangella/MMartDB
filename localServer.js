@@ -7,13 +7,13 @@ import { dirname } from 'path';
 // Import routes
 import authRoutes from './routes/auth.js';
 import productRoutes from './routes/products.js';
+import searchRoutes from './routes/search.js';
 import cartRoutes from './routes/cart.js';
 import cartAiRoutes from './routes/cart-ai.js';
 import orderRoutes from './routes/orders.js';
 import userRoutes from './routes/users.js';
 import reviewRoutes from './routes/reviews.js';
 import chatRoutes from './routes/chat.js';
-import searchRoutes from './routes/search.js';
 
 // Import middleware
 import { errorHandler } from './middleware/errorHandler.js';
