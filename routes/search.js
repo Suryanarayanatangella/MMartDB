@@ -39,7 +39,7 @@ Rules:
 - "skincare/beauty" maps to "Personal Care"
     `;
 
-    const model = genAI.getGenerativeModel({ model: 'text-bison-001' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-3.5-flash' });
     const result = await model.generateContent(prompt);
     const raw = result.response.text().trim();
 
