@@ -20,6 +20,23 @@ const getUserId = (req) => {
   }
 };
 
+// Helper — ensure the user has a delivered order for this product
+const assertDeliveredPurchase = async (userId, productId) => {
+  const deliveredItem = await prisma.orderItem.findFirst({
+    where: {
+      productId,
+      order: {
+        userId,
+        status: 'DELIVERED'
+      }
+    }
+  });
+
+  if (!deliveredItem) {
+    throw new AppError('Reviews are allowed only after the product has been delivered', 403);
+  }
+};
+
 // Create review
 router.post('/', asyncHandler(async (req, res) => {
   const userId = getUserId(req);
@@ -53,6 +70,9 @@ router.post('/', asyncHandler(async (req, res) => {
     throw new AppError('You have already reviewed this product', 400);
   }
 
+  // Only allow reviews for delivered products
+  await assertDeliveredPurchase(userId, productId);
+
   // Create review
   const review = await prisma.review.create({
     data: {
@@ -78,6 +98,24 @@ router.post('/', asyncHandler(async (req, res) => {
     message: 'Review created successfully',
     review
   });
+}));
+
+// Check review eligibility for delivered product
+router.get('/eligible/:productId', asyncHandler(async (req, res) => {
+  const userId = getUserId(req);
+  const { productId } = req.params;
+
+  const eligible = !!await prisma.orderItem.findFirst({
+    where: {
+      productId,
+      order: {
+        userId,
+        status: 'DELIVERED'
+      }
+    }
+  });
+
+  res.status(200).json({ success: true, eligible });
 }));
 
 // Get product reviews
