@@ -45,13 +45,14 @@ router.post('/register', asyncHandler(async (req, res) => {
       password: hashedPassword,
       firstName,
       lastName,
-      phone: phone || null
+      phone: phone || null, // Optional field
     },
     select: {
       id: true,
       email: true,
       firstName: true,
       lastName: true,
+      phone: true,
       role: true
     }
   });
@@ -98,7 +99,8 @@ router.post('/login', asyncHandler(async (req, res) => {
     email: user.email,
     firstName: user.firstName,
     lastName: user.lastName,
-    role: user.role
+    role: user.role,
+    phone: user.phone
   };
 
   res.status(200).json({

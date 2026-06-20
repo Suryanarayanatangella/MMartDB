@@ -21,6 +21,8 @@ export const protect = async (req, res, next) => {
         email: true,
         firstName: true,
         lastName: true,
+        password: false,
+        phone: true,
         role: true
       }
     });
