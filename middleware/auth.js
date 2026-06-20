@@ -24,7 +24,7 @@ export const protect = async (req, res, next) => {
         role: true
       }
     });
-
+    console.log('Decoded token:', decoded, 'User found:', user);
     if (!user) {
       throw new AppError('User not found', 401);
     }

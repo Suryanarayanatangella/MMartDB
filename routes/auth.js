@@ -14,7 +14,7 @@ router.post('/register', asyncHandler(async (req, res) => {
   const { email, password, firstName, lastName, phone } = req.body;
 
   // Validation
-  if (!email || !password || !firstName || !lastName) {
+  if (!email || !password || !firstName || !lastName || !phone) {
     throw new AppError('Please provide all required fields', 400);
   }
 
@@ -22,8 +22,8 @@ router.post('/register', asyncHandler(async (req, res) => {
     throw new AppError('Invalid email format', 400);
   }
 
-  if (password.length < 6) {
-    throw new AppError('Password must be at least 6 characters', 400);
+  if (password.length < 6 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password)) {
+    throw new AppError('Password must be at least 6 characters and include uppercase, lowercase, and numbers', 400);
   }
 
   // Check if user already exists

@@ -3,6 +3,8 @@ import asyncHandler from 'express-async-handler';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { PrismaClient } from '@prisma/client';
 import { protect } from '../middleware/auth.js';
+import process from 'process';
+
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -111,7 +113,7 @@ Rules:
     try {
         const cleaned = raw.replace(/```json\s*|```/g, '').trim();
         suggestions = JSON.parse(cleaned);
-    } catch (err) {
+    } catch {
         return res.status(500).json({ 
             success: false, 
             message: 'Failed to parse AI suggestions',
